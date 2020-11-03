@@ -1,7 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pdam/counter/cubit/counter_cubit.dart';
+
+import '../counter.dart';
 
 class CounterView extends StatelessWidget {
   @override
@@ -9,28 +9,27 @@ class CounterView extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     return Scaffold(
       appBar: AppBar(
-        title: Text("Counter"),
+        title: const Text("Counter"),
       ),
       body: Center(
-        child: BlocBuilder(
+        child: BlocBuilder<CounterCubit, int>(
           builder: (context, state) {
-            return Text(
-              "$state",
-              style: textTheme.headline2,
-            );
+            return Text('$state', style: textTheme.headline2);
           },
         ),
       ),
       floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           FloatingActionButton(
-            key: Key("Minus"),
-            child: Icon(Icons.remove),
+            key: const Key("Minus"),
+            child: const Icon(Icons.remove),
             onPressed: () => context.bloc<CounterCubit>().decrement(),
           ),
           FloatingActionButton(
-            key: Key("Plus"),
-            child: Icon(Icons.add),
+            key: const Key("Plus"),
+            child: const Icon(Icons.add),
             onPressed: () => context.bloc<CounterCubit>().increment(),
           )
         ],
