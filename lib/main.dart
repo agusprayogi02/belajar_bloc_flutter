@@ -1,9 +1,22 @@
-import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:pdam/app.dart';
-import 'package:pdam/counter_observer.dart';
 
-void main() {
-  Bloc.observer = CounterObserver();
-  runApp(const CounterApp());
+void main() => runApp(MyApp());
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Material App',
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('Material App Bar'),
+        ),
+        body: Center(
+          child: Container(
+            child: Text('Hello World'),
+          ),
+        ),
+      ),
+    );
+  }
 }
