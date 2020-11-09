@@ -8,8 +8,8 @@ abstract class AuthenticationEvent extends Equatable {
 }
 
 class AuthStatusChaged extends AuthenticationEvent {
-  final AuthStatus status;
   const AuthStatusChaged(this.status);
+  final AuthStatus status;
 
   @override
   List<Object> get props => [status];
