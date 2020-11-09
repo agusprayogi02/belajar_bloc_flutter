@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:meta/meta.dart';
 import 'package:user_repository/user_repository.dart';
 
 part 'authentication_event.dart';
@@ -11,47 +11,48 @@ part 'authentication_state.dart';
 
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
-  AuthenticationBloc(
-      {@required AuthRepo authRepo, @required UserRepository userRepository})
-      : assert(authRepo != null),
+  AuthenticationBloc({
+    @required AuthenticationRepository authenticationRepository,
+    @required UserRepository userRepository,
+  })  : assert(authenticationRepository != null),
         assert(userRepository != null),
-        _authRepo = authRepo,
+        _authenticationRepository = authenticationRepository,
         _userRepository = userRepository,
         super(const AuthenticationState.unknown()) {
-    _streamSubscriptionStatus = _authRepo.status.listen(
-      (status) => add(AuthStatusChaged(status)),
+    _authenticationStatusSubscription = _authenticationRepository.status.listen(
+      (status) => add(AuthenticationStatusChanged(status)),
     );
   }
 
-  final AuthRepo _authRepo;
+  final AuthenticationRepository _authenticationRepository;
   final UserRepository _userRepository;
-  StreamSubscription<AuthStatus> _streamSubscriptionStatus;
+  StreamSubscription<AuthenticationStatus> _authenticationStatusSubscription;
 
   @override
   Stream<AuthenticationState> mapEventToState(
     AuthenticationEvent event,
   ) async* {
-    if (event is AuthStatusChaged) {
-      yield await _mapAuthStatusChangedToState(event);
-    } else if (event is AuthLogoutREquest) {
-      _authRepo.logOut();
+    if (event is AuthenticationStatusChanged) {
+      yield await _mapAuthenticationStatusChangedToState(event);
+    } else if (event is AuthenticationLogoutRequested) {
+      _authenticationRepository.logOut();
     }
   }
 
   @override
   Future<void> close() {
-    _streamSubscriptionStatus?.cancel();
-    _authRepo.dispose();
+    _authenticationStatusSubscription?.cancel();
+    _authenticationRepository.dispose();
     return super.close();
   }
 
-  Future<AuthenticationState> _mapAuthStatusChangedToState(
-    AuthStatusChaged event,
+  Future<AuthenticationState> _mapAuthenticationStatusChangedToState(
+    AuthenticationStatusChanged event,
   ) async {
     switch (event.status) {
-      case AuthStatus.unauthenticeted:
+      case AuthenticationStatus.unauthenticated:
         return const AuthenticationState.unauthenticated();
-      case AuthStatus.unauthenticeted:
+      case AuthenticationStatus.authenticated:
         final user = await _tryGetUser();
         return user != null
             ? AuthenticationState.authenticated(user)

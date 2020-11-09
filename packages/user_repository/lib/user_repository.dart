@@ -1,4 +1,4 @@
-library authentication_repository;
+library user_repository;
 
-export './src/models/user.dart';
-export './src/user_repos.dart';
+export 'src/models/models.dart';
+export 'src/user_repository.dart';
