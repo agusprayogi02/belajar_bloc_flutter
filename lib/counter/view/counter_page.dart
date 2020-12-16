@@ -5,7 +5,7 @@ import '../counter.dart';
 import 'conter_view.dart';
 
 class CounterPage extends StatelessWidget {
-  const CounterPage({Key key}) : super(key: key);
+  const CounterPage() : super();
 
   @override
   Widget build(BuildContext context) {
