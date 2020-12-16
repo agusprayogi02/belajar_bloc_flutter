@@ -1,8 +1,6 @@
 part of 'timer_page.dart';
 
 class TimerActions extends StatelessWidget {
-  const TimerActions({Key key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -17,14 +15,13 @@ class TimerActions extends StatelessWidget {
     TimerBloc timerBloc,
   }) {
     final TimerState currentState = timerBloc.state;
-
     if (currentState is TimerInitial) {
       return [
         FloatingActionButton(
           child: Icon(Icons.play_arrow),
           onPressed: () =>
               timerBloc.add(TimerStarted(duration: currentState.duration)),
-        )
+        ),
       ];
     }
     if (currentState is TimerInProgress) {
@@ -56,14 +53,14 @@ class TimerActions extends StatelessWidget {
         FloatingActionButton(
           child: Icon(Icons.replay),
           onPressed: () => timerBloc.add(TimerReset()),
-        )
+        ),
       ];
     }
     return [];
   }
 }
 
-class Background extends StatelessWidget {
+class BackgroundWave extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return WaveWidget(

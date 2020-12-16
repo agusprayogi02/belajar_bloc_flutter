@@ -7,8 +7,6 @@ import 'package:wave/config.dart';
 part 'timer_actions.dart';
 
 class TimerPage extends StatelessWidget {
-  const TimerPage({Key key}) : super(key: key);
-
   static const TextStyle timerTextStyle = TextStyle(
     fontSize: 60,
     fontWeight: FontWeight.bold,
@@ -20,7 +18,7 @@ class TimerPage extends StatelessWidget {
       appBar: AppBar(title: Text('Flutter Timer')),
       body: Stack(
         children: [
-          Background(),
+          BackgroundWave(),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -40,15 +38,15 @@ class TimerPage extends StatelessWidget {
                           .padLeft(2, '0');
                       return Text(
                         '$minutesStr:$secondsStr',
-                        style: TimerPage.timerTextStyle,
+                        style: TextStyle(fontSize: 30),
                       );
                     },
                   ),
                 ),
               ),
               BlocBuilder<TimerBloc, TimerState>(
-                buildWhen: (previousState, currentState) =>
-                    currentState.runtimeType != previousState.runtimeType,
+                buildWhen: (previousState, state) =>
+                    state.runtimeType != previousState.runtimeType,
                 builder: (context, state) => TimerActions(),
               ),
             ],
